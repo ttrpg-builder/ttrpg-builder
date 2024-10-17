@@ -3,19 +3,13 @@ from pydantic import BaseModel, Field
 from typing import List, Any
 import json
 
+from Stat import Stat
+from Item import Item
+
 # Define the classes for stats, actions, inventory items, and resources
-
-class Stat(BaseModel):
-    name: str
-    value: int
-
 class Action(BaseModel):
     name: str
     description: str
-
-class InventoryItem(BaseModel):
-    name: str
-    quantity: int
 
 class Resource(BaseModel):
     name: str
@@ -27,7 +21,7 @@ class AbstractEntity(BaseModel, ABC):
     stats: List[Stat] = Field(default_factory=list, description="Statistics of the entity.")
     type: List[str] = Field(default_factory=list, description="The types of the entity.")
     actions: List[Action] = Field(default_factory=list, description="List of actions the entity can perform.")
-    inventory: List[InventoryItem] = Field(default_factory=list, description="List of items in the entity's inventory.")
+    inventory: List[Item] = Field(default_factory=list, description="List of items in the entity's inventory.")
     resources: List[Resource] = Field(default_factory=list, description="Resources owned by the entity.")
     
     def get_name(self) -> str:
@@ -35,7 +29,6 @@ class AbstractEntity(BaseModel, ABC):
 
     def get_description(self) -> str:
         return self.description
-    
     
     @abstractmethod
     def dump(self, format: str = 'json') -> str:
